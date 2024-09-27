@@ -14,8 +14,13 @@ const TaskListPage: React.FC = () => {
     }, []);
 
     const handleDeleteTask = async (id: number) => {
-        await taskService.deleteTask(id);
-        setTasks(tasks.filter(task => task.id !== String(id)));
+        try {
+            await taskService.deleteTask(id);
+            setTasks(tasks.filter(task => task.id !== String(id)));
+            window.location.href = '/';
+        } catch (error) {
+            console.error("Error deleting task:", error);
+        }
     };
 
     return (

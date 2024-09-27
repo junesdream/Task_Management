@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -44,8 +45,11 @@ public class TaskService {
     }
 
     public boolean deleteTask(Long id) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
-        taskRepository.delete(task);
-        return false;
-    }
-}
+        Optional<Task> task = taskRepository.findById(id);
+        if (task.isPresent()) {
+            taskRepository.delete(task.get());
+            return true;
+        } else {
+            return false;
+        }
+}}
